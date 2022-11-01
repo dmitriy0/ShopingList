@@ -22,7 +22,7 @@ class MainViewModel : ViewModel() {
         deleteShopItemUseCase.deleteShopItem(shopItem)
     }
 
-    fun changeEnableState(shopItem: ShopItem){
+    fun changeEnableState(shopItem: ShopItem) {
         editShopItemUseCase.editShopItem(shopItem.copy(enabled = !shopItem.enabled))
     }
 }

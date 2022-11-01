@@ -4,19 +4,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.shopinglist.domain.ShopItem
 import com.example.shopinglist.domain.ShopListRepository
-import kotlin.random.Random
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
+
 
 object ShopListRepositoryImpl : ShopListRepository {
 
-    private val shopList = sortedSetOf<ShopItem>({ o1, o2 -> o1.id.compareTo(o2.id) })
+    private var shopList: SortedSet<ShopItem> =
+        sortedSetOf<ShopItem>({ o1, o2 -> o1.id.compareTo(o2.id) })
 
     private val shopListLD = MutableLiveData<List<ShopItem>>()
 
     private var autoIncrementId = 0
 
+    private const val BASE_URL = "https://api.opendota.com/api/"
+
     init {
-        for (i in 0..100) {
-            addShopItem(ShopItem("name", i, Random.nextBoolean()))
+
+        for (i in 0..20) {
+            addShopItem(ShopItem("name $i", i, Random().nextBoolean()))
         }
     }
 
@@ -50,4 +60,5 @@ object ShopListRepositoryImpl : ShopListRepository {
     private fun updateLiveData() {
         shopListLD.value = shopList.toList()
     }
+
 }
